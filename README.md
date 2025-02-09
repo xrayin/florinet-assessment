@@ -1,3 +1,20 @@
+## How to run the project
+
+1. Clone the repository
+2. Run `composer install`
+3. Run `npm install`
+4. Run `npm run dev`
+5. Create a database and update the `.env` file with the database credentials
+6. Run `php artisan migrate`
+7. Run `php artisan db:seed`
+8. Run `php artisan serve`
+9. Visit `http://localhost:8000/login` in your browser
+10. Login with the following credentials:
+    - Email: `test@example.com`
+    - Password: `Btwz3PJrZ4avTEhQ2uNdqF`
+    - Registration of a new user is disabled
+- The project is now running
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
