@@ -6,7 +6,7 @@
 4. Run `npm run dev`
 5. Create a database and update the `.env` file with the database credentials
 6. Run `php artisan migrate`
-7. Run `php artisan db:seed`
+7. Run `php artisan db:seed --class=UserSeeder`
 8. Run `php artisan serve`
 9. Visit `http://localhost:8000/login` in your browser
 10. Login with the following credentials:
