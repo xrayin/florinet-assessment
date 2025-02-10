@@ -12,6 +12,8 @@ Route::get('/shop', [\App\Http\Controllers\ProductController::class, 'index'])->
 
 Route::get('/shopping-cart', [\App\Http\Controllers\ShoppingCartController::class, 'index'])->name('shopping-cart');
 
+Route::get('/payment-success', [\App\Http\Controllers\ShoppingCartController::class, 'paymentSuccess'])->name('payment-success');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

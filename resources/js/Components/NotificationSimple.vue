@@ -14,7 +14,7 @@
                 >
                     <div class="p-4">
                         <div class="flex items-start">
-                            <div v-if="localFlashMessage" class="flex-shrink-0">
+                            <div v-if="localFlashMessage" class="flex-shrink-0 font-bold">
                                 <CheckCircleIcon class="h-6 w-6 text-green-400" aria-hidden="true" />
                             </div>
                             <div v-else-if="localFlashError" class="flex-shrink-0">

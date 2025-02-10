@@ -23,10 +23,17 @@
                             <p class="relative text-lg font-semibold text-white">{{ product.price }}</p>
                         </div>
                     </div>
-                    <div class="mt-6 cursor-pointer">
-                        <button @click="handleAddProduct(product)" class="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
-                        >Add to bag<span class="sr-only">, {{ product.name }}</span></button
-                        >
+                    <div class="flex justify-between">
+                        <div class="mt-6 cursor-pointer">
+                            <button @click="removeProduct(product)" class="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
+                            >Remove<span class="sr-only">, {{ product.name }}</span></button
+                            >
+                        </div>
+                        <div class="mt-6 cursor-pointer">
+                            <button @click="addProduct(product)" class="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
+                            >Add to bag<span class="sr-only">, {{ product.name }}</span></button
+                            >
+                        </div>
                     </div>
                 </div>
                 <div v-else class="relative">
@@ -61,27 +68,7 @@ import { useProducts } from "@/Composables/useProducts.vue";
 import NotificationSimple from "@/Components/NotificationSimple.vue";
 const { fetchProducts, products, message } = useProducts();
 import { useForm } from "@/Composables/useForm.vue";
-const { form, addProduct, removeProduct, updateQuantity, clearForm } = useForm();
-
-    // Constants
-    const flashKey = ref('');
-    const flashMessage = ref('');
-
-
-    // Methods
-    const handleAddProduct = (product) => {
-        //make a randomstring for the flash key
-        addProduct(product);
-        flashKey.value = Math.random().toString(36).substring(7);
-        flashMessage.value = product.name + ' ' + 'has been added to the selection.';
-
-    }
-    const handleRemoveProduct = (product) => {
-        removeProduct(product);
-        flashKey.value = Math.random().toString(36).substring(7);
-        flashMessage.value = product.name + ' ' + 'has been removed from the selection.';
-    }
-
+const { flashKey, flashMessage, addProduct, removeProduct } = useForm();
 
     // Lifecycle hook
     onMounted( () => {

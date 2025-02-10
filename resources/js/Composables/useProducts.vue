@@ -13,7 +13,9 @@ import {ref, watch} from 'vue';
 
     // Methods
     const fetchProducts = (page = 1) => {
-         axios.get(`/api/products?page=${page}`, {
+         axios.get(route('products.get', {
+            page: page
+         }), {
             params: {
                 search: searchQuery.value,
                 page: page

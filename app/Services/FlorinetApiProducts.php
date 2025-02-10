@@ -8,9 +8,10 @@ class FlorinetApiProducts extends FlorinetApiConnection
 {
 
     /**
+     * @return array
      * @throws GuzzleException
      */
-    public function getAllProducts()
+    public function getAllProducts(): array
     {
         $currentPage = 1;
         $productsData['data'] = [];
