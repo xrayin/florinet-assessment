@@ -15,28 +15,17 @@ class ProductController extends Controller
 
     public function getProducts(Request $request)
     {
-        return Product::Paginate(8);
-    }
+        $query = Product::query();
 
-    public function searchProducts(Request $request)
-    {
-        $products = Product::query();
-
-        if ($request->has('search')) {
-            $products->where('title', 'like', '%' . $request->search . '%');
+        // Apply search filter if 'search' parameter is provided
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
-
-        return $products->paginate(10);
-    }
-
-    public function sortProducts(Request $request)
-    {
-        $products = Product::query();
 
         if ($request->has('sort')) {
-            $products->orderBy('price', $request->sort);
+            $query->orderBy('price', $request->sort);
         }
 
-        return $products->paginate(10);
+        return $query->paginate(8); // Consistent pagination size
     }
 }

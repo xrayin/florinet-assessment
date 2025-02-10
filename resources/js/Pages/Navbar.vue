@@ -16,8 +16,16 @@
                 </div>
                 <div class="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
                     <div class="grid w-full grid-cols-1 sm:max-w-xs">
-                        <input type="search" name="search" class="col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 pl-10 pr-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="Search" />
-                        <MagnifyingGlassIcon class="pointer-events-none col-start-1 row-start-1 ml-3 size-5 self-center text-gray-400" aria-hidden="true" />
+                        <input
+                            v-if="route().current('shop')"
+                            type="search"
+                            name="search"
+                            v-model="searchQuery"
+                            @input="searchProducts"
+                            class="col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 pl-10 pr-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            placeholder="Search"
+                        />
+                        <MagnifyingGlassIcon v-if="route().current('shop')" class="pointer-events-none col-start-1 row-start-1 ml-3 size-5 self-center text-gray-400" aria-hidden="true" />
                     </div>
                 </div>
                 <div class="relative z-10 flex items-center lg:hidden">
@@ -66,9 +74,12 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import {Link} from "@inertiajs/vue3";
+import { useProducts } from "@/Composables/useProducts.vue";
+const { searchQuery, searchProducts } = useProducts();
 
 const navigation = [
     { name: 'Home', href: route('home'), current: route().current('home') },
     { name: 'Shop', href: route('shop'), current: route().current('shop') },
+    { name: 'Shopping Cart', href: route('shopping-cart'), current: route().current('shopping-cart') },
 ]
 </script>

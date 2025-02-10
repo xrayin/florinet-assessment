@@ -1,4 +1,8 @@
 <template>
+    <NotificationSimple
+        :flashKey="flashKey"
+        :flashMessage="flashMessage"
+    />
     <Main>
         <Head title="Shop" />
         <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -20,19 +24,19 @@
                         </div>
                     </div>
                     <div class="mt-6 cursor-pointer">
-                        <a :href="product.href" class="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
-                        >Add to bag<span class="sr-only">, {{ product.name }}</span></a
+                        <button @click="handleAddProduct(product)" class="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
+                        >Add to bag<span class="sr-only">, {{ product.name }}</span></button
                         >
                     </div>
                 </div>
                 <div v-else class="relative">
-                    <p>Loading products...</p>
+                    <p> {{message}} </p>
                 </div>
             </div>
 
             <!-- Pagination Buttons -->
-            <div class="w-full">
-                <div v-if="products.links" class="justify-center mt-4 flex gap-2">
+            <div class="sm:w-full">
+                <div v-if="products.links" class="justify-center mt-4 sm:flex-row lg:flex gap-2">
                     <button
                         v-for="(link, index) in products.links"
                         :key="index"
@@ -51,14 +55,37 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import Main from "@/Pages/Main.vue";
-import {defineProps, onMounted, ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import { truncateSentence } from "@/Composables/useTruncateSentence.vue";
 import { useProducts } from "@/Composables/useProducts.vue";
-const { fetchProducts, products } = useProducts();
+import NotificationSimple from "@/Components/NotificationSimple.vue";
+const { fetchProducts, products, message } = useProducts();
+import { useForm } from "@/Composables/useForm.vue";
+const { form, addProduct, removeProduct, updateQuantity, clearForm } = useForm();
+
+    // Constants
+    const flashKey = ref('');
+    const flashMessage = ref('');
+
+
+    // Methods
+    const handleAddProduct = (product) => {
+        //make a randomstring for the flash key
+        addProduct(product);
+        flashKey.value = Math.random().toString(36).substring(7);
+        flashMessage.value = product.name + ' ' + 'has been added to the selection.';
+
+    }
+    const handleRemoveProduct = (product) => {
+        removeProduct(product);
+        flashKey.value = Math.random().toString(36).substring(7);
+        flashMessage.value = product.name + ' ' + 'has been removed from the selection.';
+    }
+
 
     // Lifecycle hook
-    onMounted( async () => {
-        await fetchProducts();
+    onMounted( () => {
+        fetchProducts();
     });
 
 </script>
