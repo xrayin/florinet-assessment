@@ -8,11 +8,7 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::get('/shop', function () {
-    return Inertia::render('Shop', [
-
-    ]);
-})->name('shop');
+Route::get('/shop', [\App\Http\Controllers\ProductController::class, 'index'])->name('shop');
 
 Route::middleware([
     'auth:sanctum',
