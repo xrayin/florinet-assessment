@@ -10,6 +10,8 @@ Route::get('/', function () {
 
 Route::get('/shop', [\App\Http\Controllers\ProductController::class, 'index'])->name('shop');
 
+Route::get('/shopping-cart', [\App\Http\Controllers\ShoppingCartController::class, 'index'])->name('shopping-cart');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

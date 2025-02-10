@@ -8,3 +8,4 @@ use Illuminate\Support\Facades\Route;
 //})->middleware('auth:sanctum');
 
 Route::get('/products', [\App\Http\Controllers\ProductController::class, 'getProducts']);
+Route::post('/calculate-totals', [\App\Http\Controllers\ShoppingCartController::class, 'calculateTotals']);
