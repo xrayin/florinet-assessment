@@ -6,10 +6,13 @@ const { saveToStorage, loadFromStorage, clearStorage } = useStorage();
 const getFormInitialState = () => {
     return {
         selectedProducts: [],
+        orderData: [],
     };
 };
 
     // Constants
+    const flashKey = ref('');
+    const flashMessage = ref('');
     const form = ref(loadFromStorage('checkoutForm', getFormInitialState()));
     const isWatchingForm = ref(true);
     const totals = ref({
@@ -18,6 +21,7 @@ const getFormInitialState = () => {
         tax: 0,
         total: 0,
     });
+
 
     // Methods
     const fetchTotals = () => {
@@ -53,6 +57,8 @@ export function useForm() {
                 ...product,
                 quantity: 1,
             });
+            flashKey.value = Math.random().toString(36).substring(7);
+            flashMessage.value = 'Selected product has been added to the cart.';
         } else {
             updateQuantity(product, form.value.selectedProducts[index].quantity + 1);
         }
@@ -73,12 +79,16 @@ export function useForm() {
             // Add a new field for quantity in the product object
             form.value.selectedProducts.push({ ...product, quantity });
         }
+        flashKey.value = Math.random().toString(36).substring(7);
+        flashMessage.value = 'Selected product quantity is now: ' + quantity + '.';
     };
 
     const removeProduct = (product) => {
         const index = form.value.selectedProducts.findIndex(p => p.id === product.id);
         if (index !== -1) {
             form.value.selectedProducts.splice(index, 1);  // Remove if already selected
+            flashKey.value = Math.random().toString(36).substring(7);
+            flashMessage.value = 'Selected product has been removed from the cart.';
         }
     };
 
@@ -88,6 +98,8 @@ export function useForm() {
     };
 
     return {
+        flashKey,
+        flashMessage,
         form,
         totals,
         addProduct,

@@ -1,8 +1,15 @@
 <template>
+    <NotificationSimple
+        :flashKey="flashKey"
+        :flashMessage="flashMessage"
+    />
     <Main>
             <div class="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
-                <form class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+                <form
+                    @submit.prevent="true"
+                    class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16"
+                >
                     <section aria-labelledby="cart-heading" class="lg:col-span-7">
                         <h2 id="cart-heading" class="sr-only">Items in your shopping cart</h2>
 
@@ -109,7 +116,14 @@
                         </dl>
 
                         <div class="mt-6">
-                            <button type="submit" class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">Checkout</button>
+                            <button
+                                type="submit"
+                                :disabled="form.selectedProducts.length === 0"
+                                @click="handleCheckout"
+                                class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 disabled:opacity-25 disabled:cursor-not-allowed"
+                            >
+                                Checkout
+                            </button>
                         </div>
                     </section>
                 </form>
@@ -122,8 +136,24 @@ import { ChevronDownIcon } from '@heroicons/vue/16/solid'
 import { CheckIcon, ClockIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/vue/20/solid'
 import Main from "@/Pages/Main.vue";
 import { useForm } from "@/Composables/useForm.vue";
-import {onMounted} from "vue";
-const { form, totals, removeProduct, updateQuantity, clearForm, fetchTotals } = useForm();
+import {onMounted, ref} from "vue";
+import NotificationSimple from "@/Components/NotificationSimple.vue";
+const { flashKey, flashMessage, form, totals, removeProduct, updateQuantity, clearForm, fetchTotals } = useForm();
+import { router } from '@inertiajs/vue3'
+
+    // Methods
+    const handleCheckout = () => {
+        axios.post(route('order.create'), {
+            selectedProducts: form.value.selectedProducts
+        })
+            .then(response => {
+                form.value.orderData = response.data.data;
+                router.visit(route('payment-success'));
+            })
+            .catch(error => {
+                alert(error.response?.data?.message || "An error occurred during checkout.");
+            });
+    };
 
     // Lifecycle hooks
     onMounted(() => {
